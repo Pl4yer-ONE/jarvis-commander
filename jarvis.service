@@ -1,0 +1,19 @@
+[Unit]
+Description=Maximus AI Commander — Always-on Autonomous Agent
+After=network.target sound.target graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.gemini/antigravity/scratch/jarvis
+ExecStart=%h/.gemini/antigravity/scratch/jarvis/venv/bin/python main.py --autonomous
+Environment=DISPLAY=:1
+Environment=PULSE_SERVER=unix:/run/user/1000/pulse/native
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Restart=always
+RestartSec=3
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Maximus Dashboard — Live Command Center
+After=jarvis.service
+Wants=jarvis.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/dev/.gemini/antigravity/scratch/jarvis
+Environment=DISPLAY=:1
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+ExecStart=/home/dev/.gemini/antigravity/scratch/jarvis/venv/bin/python3 /home/dev/.gemini/antigravity/scratch/jarvis/max_dashboard.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

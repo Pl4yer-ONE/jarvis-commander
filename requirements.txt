@@ -1,0 +1,43 @@
+# Max AI Assistant — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# ── Core ──────────────────────────────────────────
+python-dotenv>=1.0.0          # .env file loading
+pydantic>=2.0.0               # Data validation & settings
+pydantic-settings>=2.0.0      # Auto .env loading for config
+
+# ── Speech-to-Text (Ears) ────────────────────────
+SpeechRecognition>=3.10.0     # Microphone input + STT
+PyAudio>=0.2.14               # Microphone access (needs portaudio19-dev)
+faster-whisper>=1.0.0         # CTranslate2 Whisper (4x faster, int8 CPU)
+
+# ── Text-to-Speech (Voice) ───────────────────────
+edge-tts>=7.0.0               # Microsoft neural TTS (deep male voice)
+
+# ── LLM (Brain) ─────────────────────────────────
+ollama>=0.4.0                 # Local LLM via Ollama (async client)
+openai>=1.14.0                # OpenAI API fallback
+google-genai>=1.0.0           # Google Gemini API fallback
+
+# ── Skills / System Control ──────────────────────
+psutil>=5.9.0                 # CPU, RAM, disk, battery, process info
+
+# ── Online Operations ───────────────────────────
+requests>=2.31.0              # HTTP requests for web scraping
+beautifulsoup4>=4.12.0        # HTML parsing for webpage reading
+duckduckgo-search>=5.0.0      # DuckDuckGo web search API
+
+# ── Vision & Perception ─────────────────────────
+mss>=9.0.0                    # Fast screenshot capture
+opencv-python>=4.8.0          # Camera access and image processing
+ultralytics>=8.0.0            # YOLOv8 object detection
+numpy>=1.24.0                 # Array operations for vision
+Pillow>=10.0.0                # Image processing for camera feed overlay
+
+# ── Async I/O ────────────────────────────────────
+aiosqlite>=0.20.0             # Async SQLite for persistent memory
+
+# ── Web Dashboard ────────────────────────────────
+fastapi>=0.115.0              # Web framework for dashboard backend
+uvicorn[standard]>=0.32.0     # ASGI server for FastAPI
+websockets>=14.0              # WebSocket support for live streaming

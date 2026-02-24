@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXIMUS COMMAND CENTER</title>
+    <meta name="description" content="Max AI - Live Command & Control Dashboard">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- ═══ HEADER ═══ -->
+    <header id="header">
+        <div class="header-left">
+            <div class="logo-pulse"></div>
+            <h1><span class="accent">⚔</span> MAXIMUS <span class="dim">DECIMUS MERIDIUS</span></h1>
+            <span class="subtitle">— COMMAND CENTER v2.0</span>
+        </div>
+        <div class="header-right">
+            <div class="connection-status" id="connStatus">
+                <span class="dot"></span>
+                <span class="label">CONNECTING</span>
+            </div>
+            <div class="clock" id="clock">--:--:--</div>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN GRID ═══ -->
+    <main id="grid">
+        <!-- ─── ROW 1: Camera + YOLO + Sentinel ─── -->
+        <section class="card card-camera" id="cameraCard">
+            <div class="card-header">
+                <span class="card-icon">📹</span>
+                <span class="card-title">LIVE CAMERA + YOLO</span>
+                <span class="status-dot active" id="camDot"></span>
+            </div>
+            <div class="camera-container">
+                <canvas id="cameraCanvas" width="640" height="480"></canvas>
+                <div class="camera-overlay" id="cameraOverlay">
+                    <span>WAITING FOR FEED...</span>
+                </div>
+                <div class="camera-stats" id="cameraStats">
+                    <span id="camFps">0 FPS</span>
+                    <span id="camObjects">0 objects</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-yolo" id="yoloCard">
+            <div class="card-header">
+                <span class="card-icon">🔍</span>
+                <span class="card-title">YOLO DETECTIONS</span>
+                <span class="status-dot" id="yoloDot"></span>
+            </div>
+            <div class="card-body scroll" id="yoloBody">
+                <div class="empty-state">Scanning...</div>
+            </div>
+        </section>
+
+        <section class="card card-sentinel" id="sentinelCard">
+            <div class="card-header">
+                <span class="card-icon">🛡</span>
+                <span class="card-title">SENTINEL STATUS</span>
+            </div>
+            <div class="card-body" id="sentinelBody">
+                <div class="sentinel-row" id="sentCam">
+                    <span class="s-dot"></span><span class="s-name">Camera</span><span class="s-status">--</span>
+                </div>
+                <div class="sentinel-row" id="sentYolo">
+                    <span class="s-dot"></span><span class="s-name">YOLO</span><span class="s-status">--</span>
+                </div>
+                <div class="sentinel-row" id="sentSys">
+                    <span class="s-dot"></span><span class="s-name">System</span><span class="s-status">--</span>
+                </div>
+                <div class="sentinel-row" id="sentUsb">
+                    <span class="s-dot"></span><span class="s-name">USB Watch</span><span class="s-status">--</span>
+                </div>
+                <div class="sentinel-row" id="sentUpdate">
+                    <span class="s-dot"></span><span class="s-name">Self Update</span><span class="s-status">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ROW 2: Telemetry + Thoughts + Vision ─── -->
+        <section class="card card-telemetry" id="telemetryCard">
+            <div class="card-header">
+                <span class="card-icon">⚙</span>
+                <span class="card-title">SYSTEM TELEMETRY</span>
+            </div>
+            <div class="card-body" id="telemetryBody">
+                <div class="gauge-row">
+                    <div class="gauge" id="cpuGauge">
+                        <svg viewBox="0 0 100 50">
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg"/>
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="cpuArc"/>
+                        </svg>
+                        <div class="gauge-label"><span id="cpuVal">0</span>%</div>
+                        <div class="gauge-name">CPU</div>
+                    </div>
+                    <div class="gauge" id="ramGauge">
+                        <svg viewBox="0 0 100 50">
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg"/>
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="ramArc"/>
+                        </svg>
+                        <div class="gauge-label"><span id="ramVal">0</span>%</div>
+                        <div class="gauge-name">RAM</div>
+                    </div>
+                </div>
+                <div class="telemetry-stats">
+                    <div class="stat">
+                        <span class="stat-icon">💾</span>
+                        <span class="stat-label">Disk</span>
+                        <span class="stat-value" id="diskVal">--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🌡</span>
+                        <span class="stat-label">Temp</span>
+                        <span class="stat-value" id="tempVal">--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🔋</span>
+                        <span class="stat-label">Battery</span>
+                        <span class="stat-value" id="battVal">--</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">🔌</span>
+                        <span class="stat-label">USB</span>
+                        <span class="stat-value" id="usbVal">0 devices</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card card-thoughts" id="thoughtsCard">
+            <div class="card-header">
+                <span class="card-icon">🧠</span>
+                <span class="card-title">INNER THOUGHTS</span>
+                <span class="thought-count" id="thoughtCount">0</span>
+            </div>
+            <div class="card-body scroll" id="thoughtsBody">
+                <div class="empty-state">Thinking...</div>
+            </div>
+        </section>
+
+        <section class="card card-vision" id="visionCard">
+            <div class="card-header">
+                <span class="card-icon">🔮</span>
+                <span class="card-title">VISION MODEL</span>
+                <span class="status-dot" id="visionDot"></span>
+            </div>
+            <div class="card-body" id="visionBody">
+                <div class="empty-state">Analyzing scene...</div>
+            </div>
+        </section>
+
+        <!-- ─── ROW 3: Chat (full width) ─── -->
+        <section class="card card-chat" id="chatCard">
+            <div class="card-header">
+                <span class="card-icon">💬</span>
+                <span class="card-title">LIVE DIALOGUE</span>
+                <span class="msg-count" id="msgCount">0 msgs</span>
+            </div>
+            <div class="card-body scroll" id="chatBody">
+                <div class="empty-state">Waiting for dialogue...</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

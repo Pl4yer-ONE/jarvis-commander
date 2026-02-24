@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=MAXIMUS Command Center
+Comment=Max AI Desktop Dashboard
+Exec=/home/dev/.gemini/antigravity/scratch/jarvis/venv/bin/python /home/dev/.gemini/antigravity/scratch/jarvis/max_desktop_dashboard.py --frameless --on-top
+Path=/home/dev/.gemini/antigravity/scratch/jarvis
+Terminal=false
+Type=Application
+Categories=Utility;System;
+StartupNotify=true
+Icon=utilities-system-monitor
