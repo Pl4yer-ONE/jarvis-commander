@@ -110,7 +110,7 @@ class Listener:
             return None
 
         try:
-            wav_bytes = audio.get_wav_data()
+            wav_bytes = audio.get_wav_data(convert_rate=16000, convert_width=2)
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
                 tmp.write(wav_bytes)
                 tmp.flush()
@@ -119,11 +119,7 @@ class Listener:
                     tmp.name,
                     beam_size=1,
                     best_of=1,
-                    vad_filter=True,
-                    vad_parameters=dict(
-                        min_silence_duration_ms=300,
-                        speech_pad_ms=200,
-                    ),
+                    vad_filter=False,
                     language=None,  # Auto-detect (English + Malayalam)
                     condition_on_previous_text=False,
                 )
