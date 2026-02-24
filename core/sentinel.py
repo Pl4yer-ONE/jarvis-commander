@@ -216,6 +216,54 @@ def _yolo_loop(interval: float = 0.5):
         time.sleep(interval)
 
 
+# ── Vision Model Loop ────────────────────────────────────────
+
+def _vision_loop(interval: int = 20):
+    """Vision model description generation loop."""
+    logger.info("🔮 Vision thread started (every %ds)", interval)
+    from config import load_config
+    config = load_config()
+
+    while True:
+        try:
+            latest = CAPTURE_DIR / "cam_latest.jpg"
+            if not latest.exists():
+                time.sleep(2)
+                continue
+
+            # Need to periodically check if the file was modified recently to avoid analyzing old frames
+            import urllib.error
+            import urllib.request
+            
+            with open(latest, "rb") as f:
+                img_data = f.read()
+
+            import ollama
+            response = ollama.chat(
+                model=config.vision_model,
+                messages=[{
+                    "role": "user",
+                    "content": "Describe what you see in 2-3 sentences. Be specific about people, objects, lighting.",
+                    "images": [img_data],
+                }],
+            )
+            msg = response.get("message", response) if isinstance(response, dict) else response.message
+            description = msg.get("content", "") if isinstance(msg, dict) else (msg.content or "")
+
+            _publish_sync("sentinel.vision_model", {
+                "status": "active",
+                "last_description": description,
+                "last_update": datetime.now().isoformat(),
+                "error": None,
+            })
+            
+            # Since this is a heavy task, wait the full interval after finishing
+        except Exception as e:
+            logger.debug("Vision model loop error: %s", e)
+            _publish_sync("sentinel.vision_model", {"status": "error", "error": str(e)})
+
+        time.sleep(interval)
+
 # ── System Telemetry ─────────────────────────────────────────
 
 def _system_loop(interval: int = 15):
@@ -488,6 +536,7 @@ def start_sentinel(
     threads = [
         ("sentinel-camera", _camera_loop, (camera_interval,)),
         ("sentinel-yolo", _yolo_loop, (yolo_interval,)),
+        ("sentinel-vision", _vision_loop, (20,)),
         ("sentinel-system", _system_loop, (system_interval,)),
         ("sentinel-usb", _usb_loop, (usb_interval,)),
         ("sentinel-update", _self_update_loop, (update_interval,)),

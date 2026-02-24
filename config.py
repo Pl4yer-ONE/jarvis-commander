@@ -75,7 +75,7 @@ class MaxConfig(BaseSettings):
     free_talk_enabled: bool = True
     free_talk_min_interval: int = 20
     camera_feed_enabled: bool = True
-    vision_model: str = "llava:7b"
+    vision_model: str = "moondream:latest"
 
     # ── STT Upgrade ──────────────────────────────────
     faster_whisper: bool = True
