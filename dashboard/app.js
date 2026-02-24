@@ -455,6 +455,32 @@
         return d.innerHTML;
     }
 
+    // ═══ CHAT INPUT ═══
+    const chatInput = $('chatInput');
+    const chatSendBtn = $('chatSendBtn');
+
+    function sendChatMessage() {
+        if (!chatInput) return;
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        chatInput.value = '';
+
+        // Optimistic UI update could go here, but we rely on WS sync to show it properly
+        fetch('/api/chat_input', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        }).catch(err => console.error('[Chat] Send failed:', err));
+    }
+
+    if (chatSendBtn && chatInput) {
+        chatSendBtn.addEventListener('click', sendChatMessage);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') sendChatMessage();
+        });
+    }
+
     // ═══ INIT ═══
     connectStateWs();
     connectCameraWs();

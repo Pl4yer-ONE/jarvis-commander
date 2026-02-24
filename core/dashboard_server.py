@@ -24,7 +24,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -134,6 +134,22 @@ def create_app() -> FastAPI:
     @app.get("/api/chat")
     async def chat():
         return {"messages": _read_recent_chat(50)}
+
+    @app.post("/api/chat_input")
+    async def chat_input(request: Request):
+        try:
+            data = await request.json()
+            msg = data.get("message", "").strip()
+            if msg:
+                from core.event_bus import get_bus
+                bus = get_bus()
+                await bus.publish("dashboard.chat_input", {
+                    "message": msg,
+                    "timestamp": time.time()
+                })
+            return {"status": "ok"}
+        except Exception as e:
+            return JSONResponse({"status": "error", "message": str(e)}, status_code=400)
 
     @app.websocket("/ws/state")
     async def ws_state(websocket: WebSocket):

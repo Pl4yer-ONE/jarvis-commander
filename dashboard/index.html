@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
     <meta name="description" content="Max AI - Live Command & Control Dashboard">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <!-- ═══ HEADER ═══ -->
     <header id="header">
@@ -93,16 +97,16 @@
                 <div class="gauge-row">
                     <div class="gauge" id="cpuGauge">
                         <svg viewBox="0 0 100 50">
-                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg"/>
-                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="cpuArc"/>
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg" />
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="cpuArc" />
                         </svg>
                         <div class="gauge-label"><span id="cpuVal">0</span>%</div>
                         <div class="gauge-name">CPU</div>
                     </div>
                     <div class="gauge" id="ramGauge">
                         <svg viewBox="0 0 100 50">
-                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg"/>
-                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="ramArc"/>
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-bg" />
+                            <path d="M10,45 A35,35 0 0,1 90,45" class="gauge-fill" id="ramArc" />
                         </svg>
                         <div class="gauge-label"><span id="ramVal">0</span>%</div>
                         <div class="gauge-name">RAM</div>
@@ -165,9 +169,15 @@
             <div class="card-body scroll" id="chatBody">
                 <div class="empty-state">Waiting for dialogue...</div>
             </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message to Max..."
+                    autocomplete="off">
+                <button id="chatSendBtn" class="chat-send-btn">SEND</button>
+            </div>
         </section>
     </main>
 
     <script src="/static/app.js"></script>
 </body>
+
 </html>

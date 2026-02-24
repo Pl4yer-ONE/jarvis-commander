@@ -209,16 +209,30 @@ def run_always_listen(listener: Listener, speaker: Speaker, brain: Brain, config
     time.sleep(0.5)
 
     idle_count = 0
+    last_chat_ts = 0.0
 
     while True:
         try:
-            if free_talk:
-                free_talk.notify_user_speaking()
+            # 1. Check for dashboard chat input first
+            from core.event_bus import get_bus
+            chat_state = get_bus().get_state("dashboard.chat_input")
+            text = None
+            
+            if chat_state and chat_state.get("timestamp", 0) > last_chat_ts:
+                msg = chat_state["message"]
+                text = f"[DASHBOARD] {msg}"
+                last_chat_ts = chat_state["timestamp"]
+                print(f"\n  \033[90m💻 Dashboard:\033[0m \033[1m{msg}\033[0m")
+            
+            # 2. If no chat input, use microphone
+            if not text:
+                if free_talk:
+                    free_talk.notify_user_speaking()
 
-            text = listener.listen()
+                text = listener.listen()
 
-            if free_talk:
-                free_talk.notify_user_done()
+                if free_talk:
+                    free_talk.notify_user_done()
 
             # Autonomous idle engagement
             if not text:
@@ -244,7 +258,7 @@ def run_always_listen(listener: Listener, speaker: Speaker, brain: Brain, config
                 continue
 
             # Enforce wake word ("hey max") on actual user speech
-            if not text.startswith("[SYSTEM:"):
+            if not text.startswith("[SYSTEM:") and not text.startswith("[DASHBOARD]"):
                 import re
                 # Clean punctuation to match "Hey, Max.", "Hey Max!", etc.
                 text_clean = re.sub(r'[^\w\s]', '', text_lower)
