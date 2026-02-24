@@ -243,6 +243,14 @@ def run_always_listen(listener: Listener, speaker: Speaker, brain: Brain, config
             if len(text_lower) < 3:
                 continue
 
+            # Enforce wake word ("hey max") on actual user speech
+            if not text.startswith("[SYSTEM:"):
+                import re
+                # Clean punctuation to match "Hey, Max.", "Hey Max!", etc.
+                text_clean = re.sub(r'[^\w\s]', '', text_lower)
+                if "hey max" not in text_clean:
+                    continue
+
             # Skip self-echo
             skip_phrases = [
                 "maximus", "decimus", "meridius", "fully operational",
